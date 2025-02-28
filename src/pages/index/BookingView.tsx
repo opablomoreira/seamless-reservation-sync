@@ -31,14 +31,14 @@ export default function BookingView({
   return (
     <>
       {selectedTimeSlot ? (
-        <div className="mb-8">
+        <div className="mb-8 animate-in fade-in duration-300">
           <Button
             variant="outline"
-            className="gap-2"
+            className="gap-2 hover:bg-primary/10"
             onClick={() => setSelectedTimeSlot(null)}
           >
             <ArrowLeft className="h-4 w-4" />
-            Back to Calendar
+            Voltar ao Calendário
           </Button>
           <div className="mt-8">
             <BookingForm
@@ -51,20 +51,22 @@ export default function BookingView({
           </div>
         </div>
       ) : (
-        <div className="space-y-8">
+        <div className="space-y-8 animate-in fade-in duration-300">
           <div className="mb-6">
             <Button
               variant="outline"
-              className="gap-2"
+              className="gap-2 hover:bg-primary/10"
               onClick={onGoBack}
             >
               <ArrowLeft className="h-4 w-4" />
-              Back to Resources
+              Voltar aos Recursos
             </Button>
-            <h2 className="text-2xl font-medium mt-4">{selectedResource.name}</h2>
-            <p className="text-muted-foreground capitalize">
-              {selectedResource.type} booking
-            </p>
+            <div className="mt-6">
+              <h2 className="text-2xl font-semibold">{selectedResource.name}</h2>
+              <p className="text-muted-foreground capitalize mt-1">
+                {selectedResource.type === 'room' ? 'Sala' : 'Veículo'} para reserva
+              </p>
+            </div>
           </div>
 
           <div className="rounded-xl border bg-card text-card-foreground shadow glass p-6">

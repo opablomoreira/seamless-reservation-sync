@@ -1,5 +1,6 @@
 
 import { Button } from '@/components/ui/button';
+import { CalendarRange, LogIn } from 'lucide-react';
 
 interface MyBookingsTabProps {
   isAuthenticated: boolean;
@@ -12,20 +13,27 @@ export default function MyBookingsTab({ isAuthenticated, isLoading, login }: MyB
     <div className="rounded-xl border bg-card text-card-foreground shadow glass p-6">
       {isAuthenticated ? (
         <div className="text-center py-10">
-          <h3 className="text-xl font-medium mb-6">My Bookings</h3>
+          <div className="flex justify-center mb-4">
+            <CalendarRange className="h-12 w-12 text-primary" />
+          </div>
+          <h3 className="text-2xl font-semibold mb-4">Minhas Reservas</h3>
           <p className="text-muted-foreground max-w-md mx-auto">
-            This feature would show your bookings and allow you to manage them.
-            This section would be implemented in a real application.
+            Este recurso mostraria suas reservas e permitiria gerenciá-las.
+            Esta seção seria implementada em uma aplicação real.
           </p>
         </div>
       ) : (
         <div className="text-center py-10">
-          <h3 className="text-xl font-medium mb-2">Sign In Required</h3>
+          <div className="flex justify-center mb-4">
+            <LogIn className="h-12 w-12 text-primary" />
+          </div>
+          <h3 className="text-2xl font-semibold mb-4">Login Necessário</h3>
           <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-            You need to sign in with your Outlook account to view your bookings.
+            Você precisa fazer login com sua conta Outlook para ver suas reservas.
           </p>
-          <Button onClick={login} disabled={isLoading}>
-            Sign in with Outlook
+          <Button onClick={login} disabled={isLoading} className="px-6">
+            <LogIn className="mr-2 h-4 w-4" />
+            Entrar com Outlook
           </Button>
         </div>
       )}
