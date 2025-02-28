@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { Resource } from '@/utils/types';
 import { bookingService } from '@/services/bookingService';
 import { useOutlookAuth } from '@/hooks/useOutlookAuth';
@@ -32,7 +33,7 @@ interface BookingFormProps {
 }
 
 const formSchema = z.object({
-  title: z.string().min(3, { message: 'Title must be at least 3 characters' }),
+  title: z.string().min(3, { message: 'O título deve ter pelo menos 3 caracteres' }),
   description: z.string().optional(),
 });
 
@@ -58,7 +59,7 @@ export default function BookingForm({
 
   const onSubmit = async (data: FormData) => {
     if (!isAuthenticated) {
-      toast.error('Please sign in with Outlook first');
+      toast.error('Por favor, faça login com o Outlook primeiro');
       return;
     }
 
@@ -76,16 +77,16 @@ export default function BookingForm({
         },
         {
           id: user?.id || 'guest',
-          name: user?.displayName || 'Guest User',
+          name: user?.displayName || 'Usuário Convidado',
           email: user?.email || 'guest@example.com',
         }
       );
 
-      toast.success('Booking created successfully');
+      toast.success('Reserva criada com sucesso');
       onSuccess();
     } catch (error) {
-      console.error('Error creating booking:', error);
-      toast.error(error instanceof Error ? error.message : 'Failed to create booking');
+      console.error('Erro ao criar reserva:', error);
+      toast.error(error instanceof Error ? error.message : 'Falha ao criar reserva');
     } finally {
       setIsSubmitting(false);
     }
@@ -94,23 +95,25 @@ export default function BookingForm({
   return (
     <Card className="w-full max-w-md mx-auto animate-slide-up card-shadow">
       <CardHeader>
-        <CardTitle>Book {resource.name}</CardTitle>
-        <CardDescription>Complete the form to reserve this {resource.type}</CardDescription>
+        <CardTitle>Reservar {resource.name}</CardTitle>
+        <CardDescription>
+          Complete o formulário para reservar este {resource.type === 'room' ? 'sala' : 'veículo'}
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4 mb-4">
           <div className="flex items-center p-3 rounded-md bg-accent/50">
             <Calendar className="h-5 w-5 mr-2 text-primary" />
             <div className="text-sm">
-              <span className="font-medium">Date: </span>
-              {format(selectedStart, 'EEEE, MMMM d, yyyy')}
+              <span className="font-medium">Data: </span>
+              {format(selectedStart, 'EEEE, d \'de\' MMMM \'de\' yyyy', { locale: ptBR })}
             </div>
           </div>
           <div className="flex items-center p-3 rounded-md bg-accent/50">
             <Clock className="h-5 w-5 mr-2 text-primary" />
             <div className="text-sm">
-              <span className="font-medium">Time: </span>
-              {format(selectedStart, 'h:mm a')} - {format(selectedEnd, 'h:mm a')}
+              <span className="font-medium">Horário: </span>
+              {format(selectedStart, 'HH:mm')} - {format(selectedEnd, 'HH:mm')}
             </div>
           </div>
         </div>
@@ -118,10 +121,10 @@ export default function BookingForm({
         {!isAuthenticated ? (
           <div className="text-center py-6">
             <p className="text-muted-foreground mb-4">
-              You need to sign in with your Outlook account to continue
+              Você precisa fazer login com sua conta do Outlook para continuar
             </p>
             <Button onClick={login} className="w-full">
-              Sign in with Outlook
+              Entrar com o Outlook
             </Button>
           </div>
         ) : (
@@ -132,9 +135,9 @@ export default function BookingForm({
                 name="title"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Title</FormLabel>
+                    <FormLabel>Título</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter booking title" {...field} />
+                      <Input placeholder="Digite o título da reserva" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -145,10 +148,10 @@ export default function BookingForm({
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Description (optional)</FormLabel>
+                    <FormLabel>Descrição (opcional)</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Add any additional details"
+                        placeholder="Adicione detalhes adicionais"
                         className="resize-none"
                         {...field}
                       />
@@ -163,7 +166,7 @@ export default function BookingForm({
       </CardContent>
       <CardFooter className="flex justify-between">
         <Button variant="outline" onClick={onCancel}>
-          Cancel
+          Cancelar
         </Button>
         {isAuthenticated && (
           <Button
@@ -171,7 +174,7 @@ export default function BookingForm({
             disabled={isSubmitting}
             onClick={form.handleSubmit(onSubmit)}
           >
-            {isSubmitting ? 'Booking...' : 'Confirm Booking'}
+            {isSubmitting ? 'Reservando...' : 'Confirmar Reserva'}
           </Button>
         )}
       </CardFooter>

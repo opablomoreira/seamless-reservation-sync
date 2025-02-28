@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { Booking, Resource } from '@/utils/types';
 import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { bookingService } from '@/services/bookingService';
 import { useOutlookAuth } from '@/hooks/useOutlookAuth';
 
@@ -40,18 +41,18 @@ export default function BookingDetails({
 
   const handleCancelBooking = async () => {
     if (!user) {
-      toast.error('You must be signed in to cancel a booking');
+      toast.error('Você precisa estar conectado para cancelar uma reserva');
       return;
     }
 
     try {
       setIsCancelling(true);
       await bookingService.cancelBooking(booking.id, user.id);
-      toast.success('Booking cancelled successfully');
+      toast.success('Reserva cancelada com sucesso');
       onCancelled();
     } catch (error) {
-      console.error('Error cancelling booking:', error);
-      toast.error(error instanceof Error ? error.message : 'Failed to cancel booking');
+      console.error('Erro ao cancelar reserva:', error);
+      toast.error(error instanceof Error ? error.message : 'Falha ao cancelar reserva');
     } finally {
       setIsCancelling(false);
     }
@@ -71,7 +72,7 @@ export default function BookingDetails({
         <DialogHeader>
           <DialogTitle>{booking.title}</DialogTitle>
           <DialogDescription>
-            Booking details for {resource.name}
+            Detalhes da reserva para {resource.name}
           </DialogDescription>
         </DialogHeader>
 
@@ -81,16 +82,16 @@ export default function BookingDetails({
               variant={booking.status === 'confirmed' ? 'default' : 'destructive'}
               className="capitalize"
             >
-              {booking.status}
+              {booking.status === 'confirmed' ? 'Confirmado' : 'Cancelado'}
             </Badge>
           </div>
 
           <div className="flex items-start gap-3">
             <Calendar className="h-5 w-5 mt-0.5 text-muted-foreground" />
             <div>
-              <p className="font-medium">Date</p>
+              <p className="font-medium">Data</p>
               <p className="text-sm text-muted-foreground">
-                {format(booking.start, 'EEEE, MMMM d, yyyy')}
+                {format(booking.start, 'EEEE, d \'de\' MMMM \'de\' yyyy', { locale: ptBR })}
               </p>
             </div>
           </div>
@@ -98,9 +99,9 @@ export default function BookingDetails({
           <div className="flex items-start gap-3">
             <Clock className="h-5 w-5 mt-0.5 text-muted-foreground" />
             <div>
-              <p className="font-medium">Time</p>
+              <p className="font-medium">Horário</p>
               <p className="text-sm text-muted-foreground">
-                {format(booking.start, 'h:mm a')} - {format(booking.end, 'h:mm a')}
+                {format(booking.start, 'HH:mm')} - {format(booking.end, 'HH:mm')}
               </p>
             </div>
           </div>
@@ -108,9 +109,9 @@ export default function BookingDetails({
           <div className="flex items-start gap-3">
             <MapPin className="h-5 w-5 mt-0.5 text-muted-foreground" />
             <div>
-              <p className="font-medium">Resource</p>
+              <p className="font-medium">Recurso</p>
               <p className="text-sm text-muted-foreground">
-                {resource.name} ({resource.type})
+                {resource.name} ({resource.type === 'room' ? 'Sala' : 'Veículo'})
               </p>
             </div>
           </div>
@@ -118,7 +119,7 @@ export default function BookingDetails({
           <div className="flex items-start gap-3">
             <User className="h-5 w-5 mt-0.5 text-muted-foreground" />
             <div>
-              <p className="font-medium">Booked By</p>
+              <p className="font-medium">Reservado Por</p>
               <p className="text-sm text-muted-foreground">{booking.userName}</p>
               <p className="text-xs text-muted-foreground">{booking.userEmail}</p>
             </div>
@@ -128,7 +129,7 @@ export default function BookingDetails({
             <div className="flex items-start gap-3">
               <FileText className="h-5 w-5 mt-0.5 text-muted-foreground" />
               <div>
-                <p className="font-medium">Description</p>
+                <p className="font-medium">Descrição</p>
                 <p className="text-sm text-muted-foreground">{booking.description}</p>
               </div>
             </div>
@@ -138,9 +139,9 @@ export default function BookingDetails({
             <div className="flex items-start gap-3 p-3 rounded-md bg-accent">
               <AlertTriangle className="h-5 w-5 mt-0.5 text-amber-500" />
               <div>
-                <p className="font-medium">Cancellation Policy</p>
+                <p className="font-medium">Política de Cancelamento</p>
                 <p className="text-sm text-muted-foreground">
-                  Bookings can only be cancelled at least {CANCELLATION_DEADLINE_HOURS} hours in advance.
+                  Reservas só podem ser canceladas com pelo menos {CANCELLATION_DEADLINE_HOURS} horas de antecedência.
                 </p>
               </div>
             </div>
@@ -151,7 +152,7 @@ export default function BookingDetails({
 
         <DialogFooter className="flex justify-between sm:justify-between">
           <Button variant="outline" onClick={onClose}>
-            Close
+            Fechar
           </Button>
           {isOwner && canCancel && (
             <Button
@@ -159,7 +160,7 @@ export default function BookingDetails({
               onClick={handleCancelBooking}
               disabled={isCancelling}
             >
-              {isCancelling ? 'Cancelling...' : 'Cancel Booking'}
+              {isCancelling ? 'Cancelando...' : 'Cancelar Reserva'}
             </Button>
           )}
         </DialogFooter>

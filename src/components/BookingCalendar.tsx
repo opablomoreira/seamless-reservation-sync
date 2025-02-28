@@ -7,6 +7,7 @@ import { bookingService } from '@/services/bookingService';
 import { Badge } from '@/components/ui/badge';
 import { ChevronLeft, ChevronRight, Clock } from 'lucide-react';
 import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 interface BookingCalendarProps {
   resource: Resource;
@@ -69,6 +70,7 @@ export default function BookingCalendar({
             onSelect={(date) => date && onDateChange(date)}
             disabled={disabledDays}
             className="rounded-md"
+            locale={ptBR}
           />
         </div>
 
@@ -84,7 +86,7 @@ export default function BookingCalendar({
                 <ChevronLeft className="h-4 w-4" />
               </Button>
               <h3 className="text-lg font-medium">
-                {format(selectedDate, 'EEEE, MMMM d, yyyy')}
+                {format(selectedDate, 'EEEE, d \'de\' MMMM \'de\' yyyy', { locale: ptBR })}
               </h3>
               <Button
                 variant="outline"
@@ -110,7 +112,7 @@ export default function BookingCalendar({
                 </div>
               ) : timeSlots.length === 0 ? (
                 <div className="text-center p-4">
-                  <p className="text-muted-foreground">No time slots available</p>
+                  <p className="text-muted-foreground">Nenhum horário disponível</p>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 gap-2">
@@ -129,12 +131,12 @@ export default function BookingCalendar({
                       <div className="flex items-center space-x-2">
                         <Clock className="h-4 w-4" />
                         <span>
-                          {format(slot.start, "h:mm a")} - {format(slot.end, "h:mm a")}
+                          {format(slot.start, "HH:mm")} - {format(slot.end, "HH:mm")}
                         </span>
                       </div>
                       {!slot.available && (
                         <Badge className="ml-auto" variant="secondary">
-                          Booked
+                          Reservado
                         </Badge>
                       )}
                     </Button>
