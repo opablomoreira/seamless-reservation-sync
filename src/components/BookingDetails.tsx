@@ -15,7 +15,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Calendar, Clock, User, MapPin, FileText, AlertTriangle } from 'lucide-react';
+import { Calendar, Clock, User, MapPin, FileText, AlertTriangle, CheckCircle, XCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
@@ -79,15 +79,29 @@ export default function BookingDetails({
         <div className="space-y-4 py-4">
           <div className="flex items-center gap-2">
             <Badge
-              variant={booking.status === 'confirmed' ? 'default' : 'destructive'}
-              className="capitalize"
+              className={`capitalize flex items-center gap-1 px-3 py-1 ${
+                booking.status === 'confirmed' 
+                  ? 'bg-green-100 text-green-700 hover:bg-green-200' 
+                  : 'bg-red-100 text-red-700 hover:bg-red-200'
+              }`}
+              variant="outline"
             >
-              {booking.status === 'confirmed' ? 'Confirmado' : 'Cancelado'}
+              {booking.status === 'confirmed' ? (
+                <>
+                  <CheckCircle className="h-3.5 w-3.5" />
+                  <span>Confirmado</span>
+                </>
+              ) : (
+                <>
+                  <XCircle className="h-3.5 w-3.5" />
+                  <span>Cancelado</span>
+                </>
+              )}
             </Badge>
           </div>
 
           <div className="flex items-start gap-3">
-            <Calendar className="h-5 w-5 mt-0.5 text-muted-foreground" />
+            <Calendar className="h-5 w-5 mt-0.5 text-blue-500" />
             <div>
               <p className="font-medium">Data</p>
               <p className="text-sm text-muted-foreground">
@@ -97,7 +111,7 @@ export default function BookingDetails({
           </div>
 
           <div className="flex items-start gap-3">
-            <Clock className="h-5 w-5 mt-0.5 text-muted-foreground" />
+            <Clock className="h-5 w-5 mt-0.5 text-amber-500" />
             <div>
               <p className="font-medium">Horário</p>
               <p className="text-sm text-muted-foreground">
@@ -107,7 +121,7 @@ export default function BookingDetails({
           </div>
 
           <div className="flex items-start gap-3">
-            <MapPin className="h-5 w-5 mt-0.5 text-muted-foreground" />
+            <MapPin className="h-5 w-5 mt-0.5 text-emerald-500" />
             <div>
               <p className="font-medium">Recurso</p>
               <p className="text-sm text-muted-foreground">
@@ -117,7 +131,7 @@ export default function BookingDetails({
           </div>
 
           <div className="flex items-start gap-3">
-            <User className="h-5 w-5 mt-0.5 text-muted-foreground" />
+            <User className="h-5 w-5 mt-0.5 text-indigo-500" />
             <div>
               <p className="font-medium">Reservado Por</p>
               <p className="text-sm text-muted-foreground">{booking.userName}</p>
@@ -127,7 +141,7 @@ export default function BookingDetails({
 
           {booking.description && (
             <div className="flex items-start gap-3">
-              <FileText className="h-5 w-5 mt-0.5 text-muted-foreground" />
+              <FileText className="h-5 w-5 mt-0.5 text-purple-500" />
               <div>
                 <p className="font-medium">Descrição</p>
                 <p className="text-sm text-muted-foreground">{booking.description}</p>
@@ -159,7 +173,9 @@ export default function BookingDetails({
               variant="destructive"
               onClick={handleCancelBooking}
               disabled={isCancelling}
+              className="gap-2"
             >
+              <XCircle className="h-4 w-4" />
               {isCancelling ? 'Cancelando...' : 'Cancelar Reserva'}
             </Button>
           )}

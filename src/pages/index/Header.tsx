@@ -26,8 +26,8 @@ export default function Header({
     <header className="border-b sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
-          <CalendarRange className="h-6 w-6" />
-          <h1 className="text-xl font-medium">Reservation System</h1>
+          <CalendarRange className="h-6 w-6 text-primary" />
+          <h1 className="text-xl font-medium">Sistema de Reservas</h1>
         </div>
         <div className="flex items-center gap-4">
           {isAuthenticated && user ? (
@@ -40,7 +40,7 @@ export default function Header({
                 <p className="text-sm font-medium">{user.displayName}</p>
                 <p className="text-xs text-muted-foreground">{user.email}</p>
               </div>
-              <Button variant="ghost" size="icon" onClick={logout}>
+              <Button variant="ghost" size="icon" onClick={logout} title="Sair">
                 <LogOut className="h-4 w-4" />
               </Button>
             </div>
@@ -53,7 +53,7 @@ export default function Header({
               disabled={isLoading}
             >
               <LogIn className="h-4 w-4" />
-              <span>Sign In with Outlook</span>
+              <span>Entrar com Outlook</span>
             </Button>
           )}
         </div>

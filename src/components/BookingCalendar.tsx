@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Booking, Resource, TimeSlot } from '@/utils/types';
 import { bookingService } from '@/services/bookingService';
 import { Badge } from '@/components/ui/badge';
-import { ChevronLeft, ChevronRight, Clock } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Clock, Check, X } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
@@ -36,8 +36,8 @@ export default function BookingCalendar({
         const slots = await bookingService.getAvailableTimeSlots(resource.id, selectedDate);
         setTimeSlots(slots);
       } catch (err) {
-        console.error('Error fetching time slots:', err);
-        setError('Failed to load available time slots');
+        console.error('Erro ao buscar horários disponíveis:', err);
+        setError('Falha ao carregar horários disponíveis');
       } finally {
         setLoading(false);
       }
@@ -120,7 +120,7 @@ export default function BookingCalendar({
                     <Button
                       key={index}
                       variant={slot.available ? "outline" : "ghost"}
-                      className={`justify-start h-14 ${
+                      className={`justify-between h-14 ${
                         slot.available
                           ? "hover:border-primary/50 hover:bg-accent/50"
                           : "opacity-60 cursor-not-allowed"
@@ -134,9 +134,13 @@ export default function BookingCalendar({
                           {format(slot.start, "HH:mm")} - {format(slot.end, "HH:mm")}
                         </span>
                       </div>
-                      {!slot.available && (
-                        <Badge className="ml-auto" variant="secondary">
-                          Reservado
+                      {slot.available ? (
+                        <Badge className="ml-auto bg-green-100 text-green-700 hover:bg-green-200" variant="outline">
+                          <Check className="h-3 w-3 mr-1" /> Disponível
+                        </Badge>
+                      ) : (
+                        <Badge className="ml-auto bg-red-100 text-red-700" variant="outline">
+                          <X className="h-3 w-3 mr-1" /> Reservado
                         </Badge>
                       )}
                     </Button>
