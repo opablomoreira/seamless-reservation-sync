@@ -1,6 +1,6 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { BookOpen, CalendarRange, Clock } from 'lucide-react';
+import { BookOpen, CalendarRange } from 'lucide-react';
 import ResourcesTab from './ResourcesTab';
 import MyBookingsTab from './MyBookingsTab';
 import { Resource } from '@/utils/types';

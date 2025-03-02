@@ -10,6 +10,7 @@ import BookingView from './index/BookingView';
 export default function Index() {
   const [selectedResource, setSelectedResource] = useState<Resource | null>(null);
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
+  // Always initialize activeTab to 'resources' to make it the default/home tab
   const [activeTab, setActiveTab] = useState('resources');
   const [showBookingDetails, setShowBookingDetails] = useState(false);
   
@@ -17,11 +18,12 @@ export default function Index() {
 
   const handleSelectResource = (resource: Resource) => {
     setSelectedResource(resource);
-    setActiveTab('calendar');
+    // We're not changing the activeTab here anymore
   };
 
   const handleBookingSuccess = () => {
     setSelectedResource(null);
+    // After booking is successful, explicitly set the activeTab back to 'resources'
     setActiveTab('resources');
   };
 
@@ -44,7 +46,11 @@ export default function Index() {
         {selectedResource ? (
           <BookingView
             selectedResource={selectedResource}
-            onGoBack={() => setSelectedResource(null)}
+            onGoBack={() => {
+              setSelectedResource(null);
+              // Ensure we return to the resources tab when going back
+              setActiveTab('resources');
+            }}
             onBookingSuccess={handleBookingSuccess}
           />
         ) : (
