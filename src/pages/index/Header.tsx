@@ -27,7 +27,7 @@ export default function Header({
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
           <CalendarRange className="h-6 w-6 text-primary" />
-          <h1 className="text-xl font-medium">Sistema de Reservas</h1>
+          <h1 className="text-xl font-medium">Sistema de Reservas Bell'Arte</h1>
         </div>
         <div className="flex items-center gap-4">
           {isAuthenticated && user ? (
