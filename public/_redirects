@@ -1,2 +1,9 @@
 
-/* /index.html 200
+# Redirect all traffic to index.html for SPA routing
+/*    /index.html   200
+
+# Handle CORS preflight requests
+/api/*  /index.html  200
+
+# Enforce HTTPS
+http://*   https://:splat  301!
