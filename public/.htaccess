@@ -13,8 +13,12 @@
 <IfModule mod_mime.c>
     AddType application/javascript .js
     AddType application/javascript .mjs
+    AddType application/javascript .tsx
+    AddType application/javascript .ts
     AddType text/javascript .js
     AddType text/javascript .mjs
+    AddType text/javascript .tsx
+    AddType text/javascript .ts
     AddType text/css .css
 </IfModule>
 
